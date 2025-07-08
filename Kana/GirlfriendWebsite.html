@@ -1,0 +1,916 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>I Love My Girlfriend ❤️</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Arial', sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            overflow-x: hidden;
+        }
+
+        .floating-hearts {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: 1;
+        }
+
+        .heart {
+            position: absolute;
+            color: rgba(255, 182, 193, 0.7);
+            font-size: 20px;
+            animation: float 6s infinite ease-in-out;
+        }
+
+        @keyframes float {
+            0% {
+                transform: translateY(100vh) rotate(0deg);
+                opacity: 0;
+            }
+            10% {
+                opacity: 1;
+            }
+            90% {
+                opacity: 1;
+            }
+            100% {
+                transform: translateY(-100px) rotate(360deg);
+                opacity: 0;
+            }
+        }
+
+        .container {
+            position: relative;
+            z-index: 2;
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+
+        .navbar {
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(10px);
+            border-radius: 15px;
+            padding: 20px;
+            margin-bottom: 30px;
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            text-align: center;
+        }
+
+        .nav-buttons {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            gap: 15px;
+        }
+
+        .nav-btn {
+            background: rgba(255, 255, 255, 0.2);
+            color: white;
+            border: none;
+            padding: 12px 25px;
+            border-radius: 25px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-size: 1rem;
+            border: 1px solid rgba(255, 255, 255, 0.3);
+        }
+
+        .nav-btn:hover, .nav-btn.active {
+            background: rgba(255, 255, 255, 0.3);
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+        }
+
+        .page {
+            display: none;
+            animation: fadeIn 0.5s ease-in;
+        }
+
+        .page.active {
+            display: block;
+        }
+
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .page-content {
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(10px);
+            border-radius: 30px;
+            padding: 60px 40px;
+            text-align: center;
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.1);
+        }
+
+        .page-content h1 {
+            font-size: 3.5rem;
+            color: white;
+            margin-bottom: 30px;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3);
+        }
+
+        .page-content h2 {
+            font-size: 2.5rem;
+            color: white;
+            margin-bottom: 25px;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3);
+        }
+
+        .page-content p {
+            font-size: 1.4rem;
+            color: rgba(255, 255, 255, 0.9);
+            line-height: 1.8;
+            margin-bottom: 20px;
+        }
+
+        .emoji-large {
+            font-size: 5rem;
+            margin: 30px 0;
+            display: block;
+            animation: bounce 2s infinite;
+        }
+
+        @keyframes bounce {
+            0%, 20%, 50%, 80%, 100% {
+                transform: translateY(0);
+            }
+            40% {
+                transform: translateY(-10px);
+            }
+            60% {
+                transform: translateY(-5px);
+            }
+        }
+
+        .love-button {
+            background: linear-gradient(45deg, #ff6b6b, #ee5a24);
+            color: white;
+            border: none;
+            padding: 15px 40px;
+            font-size: 1.2rem;
+            border-radius: 50px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            box-shadow: 0 10px 20px rgba(255, 107, 107, 0.3);
+            margin-top: 30px;
+        }
+
+        .love-button:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 15px 30px rgba(255, 107, 107, 0.4);
+        }
+
+        .interactive-heart {
+            font-size: 3rem;
+            color: #ff6b6b;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            display: inline-block;
+            margin: 15px;
+        }
+
+        .interactive-heart:hover {
+            transform: scale(1.2);
+            filter: drop-shadow(0 0 20px #ff6b6b);
+        }
+
+        .love-message {
+            background: rgba(255, 255, 255, 0.2);
+            border-radius: 15px;
+            padding: 30px;
+            color: white;
+            font-size: 1.3rem;
+            line-height: 1.8;
+            font-style: italic;
+            margin: 30px 0;
+        }
+
+        .nav-arrows {
+            display: flex;
+            justify-content: space-between;
+            margin-top: 40px;
+        }
+
+        .arrow-btn {
+            background: rgba(255, 255, 255, 0.2);
+            color: white;
+            border: none;
+            padding: 15px 25px;
+            border-radius: 50px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-size: 1.1rem;
+        }
+
+        .arrow-btn:hover {
+            background: rgba(255, 255, 255, 0.3);
+            transform: translateY(-2px);
+        }
+
+        .arrow-btn:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+        }
+
+        @media (max-width: 768px) {
+            .page-content {
+                padding: 40px 20px;
+            }
+            
+            .page-content h1 {
+                font-size: 2.5rem;
+            }
+            
+            .page-content h2 {
+                font-size: 2rem;
+            }
+            
+            .page-content p {
+                font-size: 1.2rem;
+            }
+            
+            .nav-buttons {
+                flex-direction: column;
+                align-items: center;
+            }
+            
+            .nav-btn {
+                width: 200px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="floating-hearts" id="floating-hearts"></div>
+    
+    <div class="container">
+        <nav class="navbar">
+            <div class="nav-buttons">
+                <button class="nav-btn active" onclick="showPage('home')">🏠 Home</button>
+                <button class="nav-btn" onclick="showPage('smile')">😍 Your Eyes</button>
+                <button class="nav-btn" onclick="showPage('hugs')">🤗 Your Cuddles</button>
+                <button class="nav-btn" onclick="showPage('conversations')">💭 Our Talks</button>
+                <button class="nav-btn" onclick="showPage('laughter')">😂 Your Laughter</button>
+                <button class="nav-btn" onclick="showPage('strength')">💪 Your Strength</button>
+                <button class="nav-btn" onclick="showPage('personality')">✨ You Personality</button>
+                <button class="nav-btn" onclick="showPage('message')">💌 Love Message</button>
+            </div>
+        </nav>
+
+        <!-- Home Page -->
+<!-- Home Page -->
+<div id="home" class="page active">
+    <div class="page-content">
+        <h1>I LOVE YOU Mamokana Bella Mogano! ❤️</h1>
+
+        <!-- Inserted Image -->
+  
+<video class="responsive-video" controls>
+  <source src="Those Innocent.mp4" type="video/mp4">
+</video>
+
+<div class="heart-container">
+  <div class="heart"></div>
+  <div class="heart sparkle"></div>
+  <div class="heart"></div>
+  <div class="heart sparkle"></div>
+  <div class="heart"></div>
+</div>
+
+        <div class="heart-container">
+  <div class="heart"></div>
+  <div class="heart sparkle"></div>
+  <div class="heart"></div>
+  <div class="heart sparkle"></div>
+  <div class="heart"></div>
+</div>
+
+
+<style>
+.responsive-video {
+  width: 100%;
+  max-width: 700px;
+  height: 60%;
+  display: block;
+  margin: 20px auto;
+  border-radius: 12px;
+}
+
+.heart-container {
+  position: relative;
+  width: 300px;
+  height: 0;
+  margin-top: -20px;
+}
+
+.heart {
+  position: absolute;
+  width: 20px;
+  height: 20px;
+  background: red;
+  clip-path: polygon(
+    50% 0%,
+    61% 20%,
+    98% 20%,
+    68% 50%,
+    79% 91%,
+    50% 70%,
+    21% 91%,
+    32% 50%,
+    2% 20%,
+    39% 20%
+  );
+  animation: float 4s infinite ease-in-out;
+  opacity: 0.8;
+}
+
+.heart.sparkle {
+  background: pink;
+  width: 12px;
+  height: 12px;
+  animation: floatSparkle 5s infinite ease-in-out;
+}
+
+.heart:nth-child(1) { left: 40px; animation-delay: 0s; }
+.heart:nth-child(2) { left: 100px; animation-delay: 1s; }
+.heart:nth-child(3) { left: 160px; animation-delay: 2s; }
+.heart:nth-child(4) { left: 220px; animation-delay: 3s; }
+.heart:nth-child(5) { left: 80px; animation-delay: 4s; }
+
+@keyframes float {
+  0% { transform: translateY(0) scale(1); opacity: 0.9; }
+  50% { transform: translateY(-80px) scale(1.2); opacity: 1; }
+  100% { transform: translateY(-160px) scale(1); opacity: 0; }
+}
+
+@keyframes floatSparkle {
+  0% { transform: translateY(0) rotate(0deg) scale(0.8); opacity: 0.8; }
+  50% { transform: translateY(-100px) rotate(180deg) scale(1); opacity: 1; }
+  100% { transform: translateY(-180px) rotate(360deg) scale(0.5); opacity: 0; }
+}
+</style>
+
+        <style>
+            .love-button {
+                background: linear-gradient(45deg, #ff6b6b, #ee5a24);
+                color: white;
+                border: none;
+                padding: 15px 40px;
+                font-size: 1.2rem;
+                border-radius: 50px;
+                cursor: pointer;
+                transition: all 0.3s ease;
+                box-shadow: 0 10px 20px rgba(255, 107, 107, 0.3);
+                margin-top: 30px;
+            }
+
+            .love-button:hover {
+                transform: translateY(-3px);
+                box-shadow: 0 15px 30px rgba(255, 107, 107, 0.4);
+            }
+</style>
+
+        <span class="emoji-large">💕</span>
+        <p>Welcome to a special place dedicated to the most amazing person in my world!</p>
+        <p>She's my everything, and every day with her is a blessing that I cherish deeply.</p>
+        <p>Navigate through the pages to discover all the reasons why I love her so much.</p>
+        <button class="love-button" onclick="showLove()">Start the Journey of Love! 💖</button>
+    </div>
+    <div class="nav-arrows">
+        <button class="arrow-btn" disabled>← Previous</button>
+        <button class="arrow-btn" onclick="nextPage()">Next → Your Eyes</button>
+    </div>
+</div>
+
+
+        <!-- Her Smile Page -->
+        <div id="smile" class="page">
+            <div class="page-content">
+                <h2>Your Beautiful Eyes😍</h2>
+                <span class="emoji-large">😊</span>
+<img src="model.jpg" alt="Mamokana Bella Mogano" class="love-image">
+
+  <style>
+.love-image {
+    width: 300px;        /* Fixed width */
+    height: auto;        /* Maintains aspect ratio */
+    border-radius: 20px; /* Optional: round corners */
+    margin: 20px 0;      /* Adds spacing */
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2); /* Optional: soft shadow */
+}
+</style>              
+<div class="heart-container">
+  <div class="heart"></div>
+  <div class="heart sparkle"></div>
+  <div class="heart"></div>
+  <div class="heart sparkle"></div>
+  <div class="heart"></div>
+</div>
+</style>
+
+                <p>Every time you look at me, my heart skips a beat and the whole world seems to fade away.</p>
+                <p>Your eyes have this magical power to turn the world into an abyss I always get lost in.</p>
+                <p>It's not just a gaze – it's pure bliss, rainy days, and love stretching to the depths of the ocean wrapped into one perfect gaze.</p>
+                <p>When you look at me, I feel like the luckiest man alive because, I am.</p>
+            </div>
+            <div class="nav-arrows">
+                <button class="arrow-btn" onclick="prevPage()">← Home</button>
+                <button class="arrow-btn" onclick="nextPage()">Next → Your Cuddles</button>
+            </div>
+        </div>
+
+        <!-- Her Hugs Page -->
+        <div id="hugs" class="page">
+            <div class="page-content">
+                <h2>Your Cuddles 🤗</h2>
+                <span class="emoji-large">🫂</span>
+                <img src="hands.jpg" alt="Mamokana Bella Mogano" class="love-image">
+
+  <style>
+.love-image {
+    width: 300px;        /* Fixed width */
+    height: auto;        /* Maintains aspect ratio */
+    border-radius: 20px; /* Optional: round corners */
+    margin: 20px 0;      /* Adds spacing */
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2); /* Optional: soft shadow */
+}
+</style>              
+<div class="heart-container">
+  <div class="heart"></div>
+  <div class="heart sparkle"></div>
+  <div class="heart"></div>
+  <div class="heart sparkle"></div>
+  <div class="heart"></div>
+</div>
+</style>
+                <p>Being in your arms feels like coming home after a long journey.</p>
+                <p>Our cuddle sessions have this incredible ability to make all my worries and stress just melt away.</p>
+                <p>Being in your embrace, I find comfort, safety, and unconditional love.</p>
+                <p>No matter how tough the day has been, your hugs remind me that everything will be okay.</p>
+            </div>
+            <div class="nav-arrows">
+                <button class="arrow-btn" onclick="prevPage()">← Your Eyes</button>
+                <button class="arrow-btn" onclick="nextPage()">Next → Our Talks</button>
+            </div>
+        </div>
+
+        <!-- Conversations Page -->
+        <div id="conversations" class="page">
+            <div class="page-content">
+                <h2>Our Deep Conversations 💭</h2>
+                <span class="emoji-large">💬</span>
+                <video class="responsive-video" controls>
+  <source src="Convos.mp4" type="video/mp4">
+</video>
+
+<div class="heart-container">
+  <div class="heart"></div>
+  <div class="heart sparkle"></div>
+  <div class="heart"></div>
+  <div class="heart sparkle"></div>
+  <div class="heart"></div>
+</div>
+
+        <div class="heart-container">
+  <div class="heart"></div>
+  <div class="heart sparkle"></div>
+  <div class="heart"></div>
+  <div class="heart sparkle"></div>
+  <div class="heart"></div>
+</div>
+
+
+<style>
+.responsive-video {
+  width: 100%;
+  max-width: 700px;
+  height: 60%;
+  display: block;
+  margin: 20px auto;
+  border-radius: 12px;
+}
+
+.heart-container {
+  position: relative;
+  width: 300px;
+  height: 0;
+  margin-top: -20px;
+}
+
+.heart {
+  position: absolute;
+  width: 20px;
+  height: 20px;
+  background: red;
+  clip-path: polygon(
+    50% 0%,
+    61% 20%,
+    98% 20%,
+    68% 50%,
+    79% 91%,
+    50% 70%,
+    21% 91%,
+    32% 50%,
+    2% 20%,
+    39% 20%
+  );
+  animation: float 4s infinite ease-in-out;
+  opacity: 0.8;
+}
+
+.heart.sparkle {
+  background: pink;
+  width: 12px;
+  height: 12px;
+  animation: floatSparkle 5s infinite ease-in-out;
+}
+
+.heart:nth-child(1) { left: 40px; animation-delay: 0s; }
+.heart:nth-child(2) { left: 100px; animation-delay: 1s; }
+.heart:nth-child(3) { left: 160px; animation-delay: 2s; }
+.heart:nth-child(4) { left: 220px; animation-delay: 3s; }
+.heart:nth-child(5) { left: 80px; animation-delay: 4s; }
+
+@keyframes float {
+  0% { transform: translateY(0) scale(1); opacity: 0.9; }
+  50% { transform: translateY(-80px) scale(1.2); opacity: 1; }
+  100% { transform: translateY(-160px) scale(1); opacity: 0; }
+}
+
+@keyframes floatSparkle {
+  0% { transform: translateY(0) rotate(0deg) scale(0.8); opacity: 0.8; }
+  50% { transform: translateY(-100px) rotate(180deg) scale(1); opacity: 1; }
+  100% { transform: translateY(-180px) rotate(360deg) scale(0.5); opacity: 0; }
+}
+</style>
+
+        <style>
+            .love-button {
+                background: linear-gradient(45deg, #ff6b6b, #ee5a24);
+                color: white;
+                border: none;
+                padding: 15px 40px;
+                font-size: 1.2rem;
+                border-radius: 50px;
+                cursor: pointer;
+                transition: all 0.3s ease;
+                box-shadow: 0 10px 20px rgba(255, 107, 107, 0.3);
+                margin-top: 30px;
+            }
+
+            .love-button:hover {
+                transform: translateY(-3px);
+                box-shadow: 0 15px 30px rgba(255, 107, 107, 0.4);
+            }
+</style>
+                <p>We can talk for hours about anything and everything under the sun.</p>
+                <p>You listen whole heartedly and speaks with such wisdom and understanding that I am fond of.</p>
+                <p>Our conversations flow like a beautiful river, sometimes calm and peaceful, sometimes turmoil and adventurous.</p>
+                <p>You understand me in ways I never thought possible, and I feel truly heard when I'm with you.</p>
+            </div>
+            <div class="nav-arrows">
+                <button class="arrow-btn" onclick="prevPage()">← Your Cuddles</button>
+                <button class="arrow-btn" onclick="nextPage()">Next → Your Laughter</button>
+            </div>
+        </div>
+
+        <!-- Her Laughter Page -->
+        <div id="laughter" class="page">
+            <div class="page-content">
+                <h2>Your Infectious Laughter 😂</h2>
+  <video class="responsive-video" controls>
+  <source src="Laughter.mp4" type="video/mp4">
+</video>
+
+<style>
+.responsive-video {
+  width: 100%;
+  max-width: 700px;
+  height: auto;
+  display: block;
+  margin: 20px auto;
+  border-radius: 12px;
+}
+</style>
+                <span class="emoji-large">😄</span>
+                <p>Your laugh is the most beautiful sound I've ever heard – it's pure joy in audio form.</p>
+                <p>When you laughs, really laughs, your whole face lights up and it's absolutely magical.</p>
+                <p>You has this amazing ability to find humor in the smallest things and make me laugh until my stomach hurts.</p>
+                <p>You laughter is contagious in the best possible way, and it fills our home with happiness.</p>
+            </div>
+            <div class="nav-arrows">
+                <button class="arrow-btn" onclick="prevPage()">← Our Talks</button>
+                <button class="arrow-btn" onclick="nextPage()">Next → Your Strength</button>
+            </div>
+        </div>
+ 
+        <!-- Her Strength Page -->
+        <div id="strength" class="page">
+            <div class="page-content">
+                <h2>our Amazing Strength 💪</h2>
+                <span class="emoji-large">🦾</span>
+<video width="640" height="360" autoplay muted loop>
+  <source src="stre.mp4" type="video/mp4">
+</video>
+
+<style>
+.responsive-video {
+  width: 100%;
+  max-width: 700px;
+  height: auto;
+  display: block;
+  margin: 20px auto;
+  border-radius: 12px;
+}
+</style>
+                <p>You face every challenge with grace, courage, and determination that amazes me every day.</p>
+                <p>Your inner strength is like a beacon of light that guides not just you, but everyone around you.</p>
+                <p>You never gives up, even when things get tough, and you inspires me to be stronger too.</p>
+                <p>Watching you overcome obstacles with such resilience makes me fall in love with you all over again.</p>
+            </div>
+            <div class="nav-arrows">
+                <button class="arrow-btn" onclick="prevPage()">← Her Laughter</button>
+                <button class="arrow-btn" onclick="nextPage()">Next → Her Personality</button>
+            </div>
+        </div>
+        <!-- Her Personality Page -->
+        <div id="personality" class="page">
+            <div class="page-content">
+                <h2>Your Unique Personality ✨</h2>
+                <span class="emoji-large">🌟</span>
+
+                <video class="responsive-video" controls>
+  <source src="Su_SON.mp4" type="video/mp4">
+</video>
+
+<style>
+.responsive-video {
+  width: 100%;
+  max-width: 700px;
+  height: auto;
+  display: block;
+  margin: 20px auto;
+  border-radius: 12px;
+}
+</style>
+
+</style>
+                <p>Your one of a kind – quirky, brilliant, funny, and absolutely perfect in every way that matters.</p>
+                <p>Your personality is like a beautiful tapestry woven with kindness, intelligence, humor, and love.</p>
+                <p>Your genuine, authentic, and never try to be anyone other than your amazing self.</p>
+                <p>Every little quirk and trait makes you more lovable, and I wouldn't change a single thing about you.</p>
+            </div>
+            <div class="nav-arrows">
+                <button class="arrow-btn" onclick="prevPage()">← Your Strength</button>
+                <button class="arrow-btn" onclick="nextPage()">Next → Love Message</button>
+            </div>
+        </div>
+
+        <!-- Love Message Page -->
+        <div id="message" class="page">
+            <div class="page-content">
+                <h2>A Message From My Heart 💌</h2>
+                <span class="emoji-large">💝</span>
+                <div class="love-message">
+                      <p>A Love That Stays</p>
+
+ <p>Poem: Harboured Thoughts Part II – The Rebirth</p>
+
+ <p>We are not who we were.
+And thank God for that.</p>
+
+ <p>What once sparked from glances and jokes,
+From unspoken heat and soft collisions,
+Has become something quieter —
+But infinitely more profound.</p>
+
+ <p>You and I —
+Two souls who didn’t walk away
+When the masks fell,
+When the storm hit,
+When the pain broke through the poetry.</p>
+
+ <p>We stayed.
+
+ <p>And not because it was easy,
+But because we saw something in each other
+That made the fight worth it.
+The kind of love
+That doesn’t run from imperfection —
+But wraps arms around it and says:
+“Even here, I choose you.”</p>
+
+ <p>There is a peace in your presence now
+That no one else can offer.
+Not because you’re perfect —
+But because your soul knows mine
+And still rests beside it.</p>
+
+ <p>The lust is still there,
+But it kneels now before reverence.
+You — no longer just admired,
+But deeply known.
+Your flaws not forgiven like debts,
+But loved like fingerprints —
+Proof of your humanity,
+Etched beauty in every line.</p>
+
+ <p>We don’t chase fairy tales anymore.
+We’ve written something better —
+A love with cracked edges
+That lets the light in.</p>
+
+ <p>We build slowly.
+Deliberately.
+With more listening, more stillness,
+More apologies that don’t wait for reactions.
+More mornings where “I love you” means:
+“I’m still here. I’m not going anywhere.”</p>
+
+ <p>And when I look at you now,
+I don’t just see who you are —
+I see everything you’ve carried,
+Everything we’ve overcome,
+And I still want to be the man
+Who holds your hand
+Through all that’s still to come.</p>
+
+ <p>Because love isn’t found in the absence of flaws,
+But in the unwavering desire
+To hold each other tighter
+because of them.</p>
+
+ <p>This isn’t a second chance.
+This is the first real one.
+The one born from truth,
+From pain,
+From grace,
+From choosing each other
+When it would’ve been easier to leave.</p>
+
+ <p>We’re not perfect.
+But this —
+This is a love that stays.
+This is a love
+That knows us both,
+And chooses us anyway.</p>
+
+<p>By: KC </p></div>
+                
+                <div>
+                    <span class="interactive-heart" onclick="heartClick(this)">💖</span>
+                    <span class="interactive-heart" onclick="heartClick(this)">💕</span>
+                    <span class="interactive-heart" onclick="heartClick(this)">💗</span>
+                    <span class="interactive-heart" onclick="heartClick(this)">💝</span>
+                </div>
+            </div>
+            <div class="nav-arrows">
+                <button class="arrow-btn" onclick="prevPage()">← Your Personality</button>
+                <button class="arrow-btn" onclick="showPage('home')">🏠 Back to Home</button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        const pages = ['home', 'smile', 'hugs', 'conversations', 'laughter', 'strength', 'personality', 'message'];
+        let currentPageIndex = 0;
+
+        function showPage(pageId) {
+            // Hide all pages
+            document.querySelectorAll('.page').forEach(page => {
+                page.classList.remove('active');
+            });
+            
+            // Remove active class from all nav buttons
+            document.querySelectorAll('.nav-btn').forEach(btn => {
+                btn.classList.remove('active');
+            });
+            
+            // Show selected page
+            document.getElementById(pageId).classList.add('active');
+            
+            // Add active class to corresponding nav button
+            event.target.classList.add('active');
+            
+            // Update current page index
+            currentPageIndex = pages.indexOf(pageId);
+        }
+
+        function nextPage() {
+            if (currentPageIndex < pages.length - 1) {
+                currentPageIndex++;
+                const nextPageId = pages[currentPageIndex];
+                showPage(nextPageId);
+                
+                // Update nav button active state
+                document.querySelectorAll('.nav-btn').forEach(btn => btn.classList.remove('active'));
+                document.querySelectorAll('.nav-btn')[currentPageIndex].classList.add('active');
+            }
+        }
+
+        function prevPage() {
+            if (currentPageIndex > 0) {
+                currentPageIndex--;
+                const prevPageId = pages[currentPageIndex];
+                showPage(prevPageId);
+                
+                // Update nav button active state
+                document.querySelectorAll('.nav-btn').forEach(btn => btn.classList.remove('active'));
+                document.querySelectorAll('.nav-btn')[currentPageIndex].classList.add('active');
+            }
+        }
+
+        // Create floating hearts
+        function createHeart() {
+            const heart = document.createElement('div');
+            heart.className = 'heart';
+            heart.innerHTML = '❤️';
+            heart.style.left = Math.random() * 100 + '%';
+            heart.style.animationDelay = Math.random() * 6 + 's';
+            heart.style.animationDuration = (Math.random() * 3 + 6) + 's';
+            document.getElementById('floating-hearts').appendChild(heart);
+            
+            setTimeout(() => {
+                heart.remove();
+            }, 9000);
+        }
+
+        // Create hearts continuously
+        setInterval(createHeart, 800);
+
+        // Button click effect
+        function showLove() {
+            const button = document.querySelector('.love-button');
+            button.innerHTML = 'I Love You So Much! 💖';
+            button.style.background = 'linear-gradient(45deg, #ff9a9e, #fecfef)';
+            
+            // Create burst of hearts
+            for (let i = 0; i < 15; i++) {
+                setTimeout(() => {
+                    createHeart();
+                }, i * 100);
+            }
+            
+            setTimeout(() => {
+                button.innerHTML = 'Start the Journey of Love! 💖';
+                button.style.background = 'linear-gradient(45deg, #ff6b6b, #ee5a24)';
+            }, 3000);
+        }
+
+        // Interactive heart click
+        function heartClick(heart) {
+            heart.style.transform = 'scale(1.5)';
+            heart.style.filter = 'drop-shadow(0 0 30px #ff6b6b)';
+            
+            setTimeout(() => {
+                heart.style.transform = 'scale(1)';
+                heart.style.filter = 'drop-shadow(0 0 20px #ff6b6b)';
+            }, 300);
+            
+            // Create extra hearts
+            for (let i = 0; i < 5; i++) {
+                setTimeout(() => {
+                    createHeart();
+                }, i * 150);
+            }
+        }
+
+        // Add some initial hearts
+        for (let i = 0; i < 5; i++) {
+            setTimeout(createHeart, i * 1000);
+        }
+
+        // Keyboard navigation
+        document.addEventListener('keydown', function(e) {
+            if (e.key === 'ArrowRight') {
+                nextPage();
+            } else if (e.key === 'ArrowLeft') {
+                prevPage();
+            }
+        });
+    </script>
+</body>
+</html>
